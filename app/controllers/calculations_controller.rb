@@ -23,7 +23,10 @@ class CalculationsController < ApplicationController
     @word_count = words.count
 
     #words.count(@special_word)
-    @occurrences = words.count(@special_word)
+    text_downcase = @text.downcase
+    text_down_no_punc = text_downcase.gsub(/[^a-z0-9\s]/i, "")
+    down_text_array = text_down_no_punc.split
+    @occurrences = down_text_array.count(@special_word)
 
     # ================================================================================
     # Your code goes above.
@@ -108,7 +111,7 @@ class CalculationsController < ApplicationController
     @range = @maximum - @minimum
 
 
-    #MEDIAN 
+    #MEDIAN
     #find the median
     #first sort
     sorted = @numbers.sort
