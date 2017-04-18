@@ -43,15 +43,7 @@ class CalculationsController < ApplicationController
     # The number of years the user input is in the integer @years.
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
-
-    @monthly_rate = @apr/12.0
-    @num_months = @years * 12.0
-
-    @numerator = @monthly_rate * @principal
-    @power = -1 * @num_months
-    @base = (1 + (1-@monthly_rate))
-    @denominator = @base ** @power
-    @monthly_payment = @numerator / @denominator
+    @monthly_payment = ((((@apr/100)/12) * @principal) / (1 - (1 + ((@apr/100)/12)) ** ( -(@years * 12))))
 
 
     # ================================================================================
@@ -74,12 +66,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = @seconds/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @days/365
 
     # ================================================================================
     # Your code goes above.
@@ -96,27 +88,34 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+#find the median
+sorted_array = @sorted_numbers
+odd_middle = ((@count-1)/2)
+median_odd = sorted_array[odd_middle]
+even_middle_1 = (@count)/2
+even_middle_2 = (@count)
+@median = "your text here"
+    #@median = def median(@sorted_numbers)
 
-    @sum = "Replace this string with your answer."
+    @sum = @numbers.sum
 
-    @mean = "Replace this string with your answer."
+    @mean = @sum/@count
 
-    @variance = "Replace this string with your answer."
+    #@variance = @numbers.variance
 
-    @standard_deviation = "Replace this string with your answer."
+    #@standard_deviation = @numbers.standard_deviation
 
-    @mode = "Replace this string with your answer."
+    #@mode = @numbers.mode
 
     # ================================================================================
     # Your code goes above.
