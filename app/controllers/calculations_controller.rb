@@ -65,14 +65,23 @@ class CalculationsController < ApplicationController
     #   So if you subtract one time from another, you will get an integer
     #   number of seconds as a result.
     # ================================================================================
+    # want to make sure that the difference between starting and ending times are always positive, so need to use an if/else setup to make that happen. ALWAYS END WITH AN 'END'!!!
 
-    @seconds = @ending - @starting
+    if @starting > @ending
+      @seconds = @starting - @ending
+    else @seconds = @ending - @starting
+    end
+
+    # great - now let's use seconds to determine calcs for min/hour/day/week/yr
     @minutes = @seconds/60
-    @hours = @minutes/60
-    @days = @hours/24
-    @weeks = @days/7
-    @years = @days/365
 
+    @hours = @seconds/3600
+
+    @days = @seconds/86400
+
+    @weeks = @seconds/604800
+
+    @years = @seconds/(31536000)
     # ================================================================================
     # Your code goes above.
     # ================================================================================
@@ -98,24 +107,63 @@ class CalculationsController < ApplicationController
 
     @range = @maximum - @minimum
 
-#find the median
-sorted_array = @sorted_numbers
-odd_middle = ((@count-1)/2)
-median_odd = sorted_array[odd_middle]
-even_middle_1 = (@count)/2
-even_middle_2 = (@count)
-@median = "your text here"
-    #@median = def median(@sorted_numbers)
 
+    #MEDIAN 
+    #find the median
+    #first sort
+    sorted = @numbers.sort
+
+    #ARRAYS start at 0!
+    #if the array is an odd length
+    if sorted.length % 2 != 0
+      #the median is the slot in the array that is one more than the total number of slots, divided by 2
+      @median = sorted[((sorted.length+1)/2)-1]
+      #if the array is an even length
+    else @median =  (sorted[(sorted.length/2)-1] + sorted[sorted.length/2])/2
+      #add up the two middle numbers and divide that sum by 2 to find the median
+    end
+    #@median = def median(@sorted_numbers)
+    #for even lengthed arrays, we need 1) the length divided by 2, plus 1 (because it starts at 0); 2) the length plus 2, divided by 2, then plus one (because it starts at 0)
+
+    #SUM
     @sum = @numbers.sum
 
+    #MEAN
     @mean = @sum/@count
 
-    #@variance = @numbers.variance
+    #VARIANCE
+    squared_difference_array = []            # Create an empty array
 
-    #@standard_deviation = @numbers.standard_deviation
+    @numbers.each do |num|       # For each element in numbers, (refer to it as "num")
+      squared_difference = (num-@mean) * (num-@mean)            # Square the number
+      squared_difference_array.push(squared_difference)  # Push it into the squared_numbers array
+    end
 
-    #@mode = @numbers.mode
+    @variance = (squared_difference_array.sum)/@numbers.count  # Sum the squares
+
+    #STANDARD DEVIATION
+    @standard_deviation = @variance**(0.5)
+
+    #square root of the variance found above
+
+    #MODE
+    frequency_array = []
+    @numbers.each do |num|       # For each element in numbers, (refer to it as "num")
+      frequency = @numbers.count(num)   # Count how many times that number appears in the array
+      frequency_array.push(frequency)  # Push it into the frequency array
+    end
+
+    #find the maximum number in the frequency array
+    max = frequency_array.max
+
+    #find what position it is in
+    position = frequency_array.index(max)
+
+    #produce the number from @numbers that corresponds to that position
+    @mode=@numbers[position]
+
+
+
 
     # ================================================================================
     # Your code goes above.
